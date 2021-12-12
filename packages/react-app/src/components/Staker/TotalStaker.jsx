@@ -25,7 +25,8 @@ const TotalStaker = ({ complete, totalStakedValue, price, isOver, threshold, bel
             percent={stakedTotalPercent}
             size="small"
           />
-          <div style={{ fontSize: "1.25rem", color: softTextCol }}>Total Staked</div>
+          <div style={{ fontSize: "1.25rem", color: softTextCol, marginTop: 8 }}>Total Staked</div>
+
 
           <Balance etherMode balance={totalStakedValue} fontSize={64} price={price} />
         </>
