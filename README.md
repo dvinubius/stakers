@@ -1,5 +1,7 @@
 # Project for Ethereum Speed Run Challenge 0
 
+## [Live on Rinkeby](https://dvinubius-stakers.surge.sh)
+
 ## scaffold-eth
 - Unlike the starter code in the scaffold-eth-challenges repo, this one is based on the current **Scaffold Eth master** at the time of creating (10 dec 2021)
 ## solution to the problem
