@@ -8,8 +8,10 @@
 - It is possible to withdraw for others because the challenge required it, but I personally wouldn't allow it in production (see contract comments for why). 
 - There is a countdown timer which only updates on new blocks. Time left until deadline is only read from contract and depends on current block. UX not optimal this way.
   - => if you try this locally keep in mind that new blocks are only mined if necessary. You can use the faucet to produce new blocks.
+- The stake events log is also not optimal, both in terms of retrieving the data (for testnet deployments) and displaying the data, but I decided to leave it like that since it's not core functionality IMO.
 ## outlook
 - This project is difficult to showcase as a testnet deployment because collection of funds can only run once. I'll make a separate multi-staker-contract app, but not as part of this challenge
+
 
 ---
 
