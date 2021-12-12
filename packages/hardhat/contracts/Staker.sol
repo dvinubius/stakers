@@ -17,7 +17,7 @@ contract Staker {
         exampleExternalContract = ExampleExternalContract(
             exampleExternalContractAddress
         );
-        deadline = block.timestamp + 2 days;
+        deadline = block.timestamp + 3 days;
     }
 
     modifier notCompleted() {

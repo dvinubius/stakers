@@ -23,8 +23,8 @@ const StakerBanner = ({ complete, balance, failed, externalContractBalance }) =>
     >
       {complete && (
         <div style={{ display: "flex", alignItems: "center" }}>
-        🚀 🎖 👩‍🚀 -- <Balance etherMode balance={externalContractBalance} fontSize={"4rem"} /> FTW -- 🎉 🍾 🎊
-      </div>
+          🚀 🎖 👩‍🚀 -- <Balance etherMode balance={externalContractBalance} fontSize={"4rem"} /> FTW -- 🎉 🍾 🎊
+        </div>
       )}
       {failed && (
         <>
