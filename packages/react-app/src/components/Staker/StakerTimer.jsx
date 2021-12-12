@@ -15,10 +15,9 @@ const StakerTimer = ({ timeLeft }) => {
         justifyContent: "center",
         alignItems: "center",
         position: "relative",
-        height: "8rem",
       }}
     >
-      <div style={{ padding: 8 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
         {!isOver && (
           <div
             style={{
@@ -40,8 +39,8 @@ const StakerTimer = ({ timeLeft }) => {
         <ClockCircleOutlined
           style={{
             display: "block",
-            zIndex: 10,
-            opacity: 0.2,
+            zIndex: 2,
+            opacity: 0.1,
             fontSize: "8rem",
             color: isOver ? "#cdcdcd" : primaryCol,
             position: "absolute",
@@ -51,17 +50,24 @@ const StakerTimer = ({ timeLeft }) => {
           }}
         />
         {isOver && <span style={{ fontSize: "1.5rem", color: softTextCol }}>Time is up! </span>}
-        {!isOver && timeLeftNum !== 0 && (
-          <span
-            style={{
-              fontSize: "1.5rem",
-              color: softTextCol,
-            }}
-          >
-            {timeLeftNum && humanizeDuration(timeLeftNum * 1000, { units: ["d", "h", "m", "s"] })}
-          </span>
-        )}
-        <br />
+        {!isOver &&
+          timeLeftNum &&
+          timeLeftNum !== 0 &&
+          humanizeDuration(timeLeftNum * 1000, { units: ["d", "h", "m", "s"] })
+            .split(",")
+            .map((part, index) => (
+              <p
+                style={{
+                  fontSize: `${1.75 - index * 0.125}rem`,
+                  lineHeight: "3rem",
+                  color: softTextCol,
+                  margin: 0,
+                  padding: 0,
+                }}
+              >
+                {part}
+              </p>
+            ))}
       </div>
     </div>
   );

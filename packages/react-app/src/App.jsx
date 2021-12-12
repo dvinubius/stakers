@@ -72,7 +72,7 @@ const { ethers } = require("ethers");
 const defaultTargetNetwork = NETWORKS.rinkeby; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
-const DEBUG = true;
+const DEBUG = false;
 const NETWORKCHECK = true;
 
 const web3Modal = Web3ModalSetup();
@@ -283,11 +283,11 @@ function App(props) {
     update();
   }, [withdrawAddress, readContracts.Staker, balanceStaked]);
 
-   // DISPLAY ONLY WHEN ALL LOADED for consistency
+  // DISPLAY ONLY WHEN ALL LOADED for consistency
 
-   const readyAll = [particularBalanceAmount, isOver, belowThreshold]
-   .map(el => typeof el !== "undefined")
-   .reduce((acc, el) => acc && el);
+  const readyAll = [particularBalanceAmount, isOver, belowThreshold]
+    .map(el => typeof el !== "undefined")
+    .reduce((acc, el) => acc && el);
 
   // HACKY HACKY
 
@@ -384,8 +384,7 @@ function App(props) {
       <Switch>
         <Route exact path="/">
           <div style={{ padding: "2rem 1rem" }}>
-
-          {!readyAll && (
+            {!readyAll && (
               <div
                 style={{
                   height: "70vh",
@@ -399,184 +398,192 @@ function App(props) {
               </div>
             )}
 
-            {readyAll && <> <StakerBanner
-              complete={complete}
-              failed={isOver && belowThreshold && !complete}
-              balance={stakerContractBalance}
-              externalContractBalance={exampleExternalContractBalance}
-            />
-
-            {
-              // CONTRACT
-            }
-            <Card
-              style={{
-                width: "35rem",
-                margin: "2rem auto",
-                background: "linear-gradient(-45deg, #40A9FF0c, transparent)",
-              }}
-            >
-              <div style={{ display: "flex", gap: "2rem", flexDirection: "column" }}>
-                <div
+            {readyAll && (
+              <>
+                {" "}
+                <StakerBanner
+                  complete={complete}
+                  failed={isOver && belowThreshold && !complete}
+                  balance={stakerContractBalance}
+                  externalContractBalance={exampleExternalContractBalance}
+                />
+                {
+                  // CONTRACT
+                }
+                <Card
                   style={{
-                    padding: 8,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: "1rem",
-                    justifyContent: "space-between",
-                    alignSelf: "center",
+                    width: "35rem",
+                    margin: "2rem auto",
+                    background: "linear-gradient(-45deg, #40A9FF0c, transparent)",
                   }}
                 >
-                  <div style={{ fontSize: "1.5rem" }}>Staker Contract</div>
-                  <Address
-                    fontSize={"1.5rem"}
-                    value={readContracts && readContracts.Staker && readContracts.Staker.address}
-                  />
-                </div>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <div style={{ flex: "1 1 auto" }}>
-                    {timeLeft && deadLine && <StakerTimer timeLeft={timeLeft}></StakerTimer>}
-                  </div>
-                  <TotalStaker
-                    complete={complete}
-                    totalStakedValue={totalStakedValue}
-                    price={price}
-                    isOver={isOver}
-                    threshold={threshold}
-                    belowThreshold={belowThreshold}
-                    openForWithdraw={openForWithdraw}
-                  />
-                </div>
-              </div>
-            </Card>
-
-            {showExecute && (
-              <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
-                <div style={{ padding: 8 }}>
-                  <Button
-                    size="large"
-                    loading={pendingUnlock}
-                    style={{ width: 180 }}
-                    type="primary"
-                    onClick={() => {
-                      setPendingUnlock(true);
-                      tx(writeContracts.Staker.execute(), update => {
-                        if (update && update.error) {
-                          setPendingUnlock(false);
-                        }
-                        if (update && (update.status === "confirmed" || update.status === 1)) {
-                          setPendingUnlock(false);
-                          forceUpdate();
-                        }
-                      });
-                    }}
-                  >
-                    {executeText} {executeIcon}
-                  </Button>
-                </div>
-              </div>
-            )}
-
-            {
-              // USER
-            }
-            <Card
-              style={{
-                width: "35rem",
-                margin: "2rem auto",
-                background: "linear-gradient(-45deg, #40A9FF0c, transparent)",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  justifyContent: showWithdrawAction || showStakeAction ? "space-between" : "center",
-                  alignItems: "center",
-                }}
-              >
-                {(showWithdrawAction || showStakeAction) && (
-                  <div
-                    style={{
-                      minWidth: "10rem",
-                      flex: "1 1 auto",
-                      height: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "stretch",
-                      gap: "1rem",
-                    }}
-                  >
-                    {showWithdrawAction && (
-                      <>
-                        <AddressInput
-                          autoFocus
-                          ensProvider={mainnetProvider}
-                          placeholder="Enter address"
-                          value={withdrawAddress}
-                          onChange={setWithdrawAddress}
-                        />
-                        <Button
-                          size="large"
-                          style={{ minWidth: "10rem" }}
-                          loading={pendingWithdrawal}
-                          disabled={withdrawableAmountZero || withdrawableBalanceError}
-                          type={"default"}
-                          onClick={() => {
-                            setPendingWithdrawal(true);
-                            tx(writeContracts.Staker.withdraw(withdrawAddress), update => {
-                              if (update && update.error) {
-                                setPendingWithdrawal(false);
-                              }
-                              if (update && (update.status === "confirmed" || update.status === 1)) {
-                                setPendingWithdrawal(false);
-                                forceUpdate();
-                              }
-                            });
-                          }}
-                        >
-                          Withdraw <RollbackOutlined />
-                        </Button>
-                      </>
-                    )}
-                    {showStakeAction && (
-                      <AddStake
-                        tx={tx}
-                        writeContracts={writeContracts}
-                        price={price}
-                        forceUpdate={forceUpdate}
-                        userBalanceZero={userBalanceZero}
+                  <div style={{ display: "flex", gap: "2rem", flexDirection: "column" }}>
+                    <div
+                      style={{
+                        padding: 8,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: "1rem",
+                        justifyContent: "space-between",
+                        alignSelf: "center",
+                      }}
+                    >
+                      <div style={{ fontSize: "1.5rem" }}>Staker Contract</div>
+                      <Address
+                        fontSize={"1.5rem"}
+                        value={readContracts && readContracts.Staker && readContracts.Staker.address}
                       />
-                    )}
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <div
+                        style={{
+                          flex: "1 1 auto",
+                          alignSelf: "stretch",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {timeLeft && deadLine && <StakerTimer timeLeft={timeLeft}></StakerTimer>}
+                      </div>
+                      <TotalStaker
+                        complete={complete}
+                        totalStakedValue={totalStakedValue}
+                        price={price}
+                        isOver={isOver}
+                        threshold={threshold}
+                        belowThreshold={belowThreshold}
+                        openForWithdraw={openForWithdraw}
+                      />
+                    </div>
+                  </div>
+                </Card>
+                {showExecute && (
+                  <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
+                    <div style={{ padding: 8 }}>
+                      <Button
+                        size="large"
+                        loading={pendingUnlock}
+                        style={{ width: 180 }}
+                        type="primary"
+                        onClick={() => {
+                          setPendingUnlock(true);
+                          tx(writeContracts.Staker.execute(), update => {
+                            if (update && update.error) {
+                              setPendingUnlock(false);
+                            }
+                            if (update && (update.status === "confirmed" || update.status === 1)) {
+                              setPendingUnlock(false);
+                              forceUpdate();
+                            }
+                          });
+                        }}
+                      >
+                        {executeText} {executeIcon}
+                      </Button>
+                    </div>
                   </div>
                 )}
+                {
+                  // USER
+                }
+                <Card
+                  style={{
+                    width: "35rem",
+                    margin: "2rem auto",
+                    background: "linear-gradient(-45deg, #40A9FF0c, transparent)",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "1rem",
+                      justifyContent: showWithdrawAction || showStakeAction ? "space-between" : "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    {(showWithdrawAction || showStakeAction) && (
+                      <div
+                        style={{
+                          minWidth: "10rem",
+                          flex: "1 1 auto",
+                          height: "100%",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "stretch",
+                          gap: "1rem",
+                        }}
+                      >
+                        {showWithdrawAction && (
+                          <>
+                            <AddressInput
+                              autoFocus
+                              ensProvider={mainnetProvider}
+                              placeholder="Enter address"
+                              value={withdrawAddress}
+                              onChange={setWithdrawAddress}
+                            />
+                            <Button
+                              size="large"
+                              style={{ minWidth: "10rem" }}
+                              loading={pendingWithdrawal}
+                              disabled={withdrawableAmountZero || withdrawableBalanceError}
+                              type={"default"}
+                              onClick={() => {
+                                setPendingWithdrawal(true);
+                                tx(writeContracts.Staker.withdraw(withdrawAddress), update => {
+                                  if (update && update.error) {
+                                    setPendingWithdrawal(false);
+                                  }
+                                  if (update && (update.status === "confirmed" || update.status === 1)) {
+                                    setPendingWithdrawal(false);
+                                    forceUpdate();
+                                  }
+                                });
+                              }}
+                            >
+                              Withdraw <RollbackOutlined />
+                            </Button>
+                          </>
+                        )}
+                        {showStakeAction && (
+                          <AddStake
+                            tx={tx}
+                            writeContracts={writeContracts}
+                            price={price}
+                            forceUpdate={forceUpdate}
+                            userBalanceZero={userBalanceZero}
+                          />
+                        )}
+                      </div>
+                    )}
 
-                <Card style={{ padding: 8, width: "15rem", color: primaryCol, flexShrink: 0 }}>
-                  <div style={{ fontSize: "1.25rem", color: particularBalanceColor }}>{particularBalanceTitle}</div>
-                  {withdrawableBalanceError && <span style={{ fontSize: "1.5rem" }}>...</span>}
-                  {!withdrawableBalanceError && (
-                    <Balance etherMode balance={particularBalanceAmount} fontSize={64} price={price} />
-                  )}
+                    <Card style={{ padding: 8, width: "15rem", color: primaryCol, flexShrink: 0 }}>
+                      <div style={{ fontSize: "1.25rem", color: particularBalanceColor }}>{particularBalanceTitle}</div>
+                      {withdrawableBalanceError && <span style={{ fontSize: "1.5rem" }}>...</span>}
+                      {!withdrawableBalanceError && (
+                        <Balance etherMode balance={particularBalanceAmount} fontSize={64} price={price} />
+                      )}
+                    </Card>
+                  </div>
                 </Card>
-              </div>
-            </Card>
-
-            <div style={{ width: 500, margin: "auto", marginTop: 64 }}>
-              <div style={{ color: softTextCol, fontSize: "1rem" }}>Stake Events</div>
-              <List
-                dataSource={stakeEvents}
-                renderItem={item => {
-                  return (
-                    <List.Item key={item.blockNumber}>
-                      <Address value={item.args[0]} ensProvider={mainnetProvider} fontSize={16} /> {"=>"}
-                      <Balance etherMode balance={item.args[1]} />
-                    </List.Item>
-                  );
-                }}
-              />
-            </div>
-            </>}
+                <div style={{ width: 500, margin: "auto", marginTop: 64 }}>
+                  <div style={{ color: softTextCol, fontSize: "1rem" }}>Stake Events</div>
+                  <List
+                    dataSource={stakeEvents}
+                    renderItem={item => {
+                      return (
+                        <List.Item key={item.blockNumber}>
+                          <Address value={item.args[0]} ensProvider={mainnetProvider} fontSize={16} /> {"=>"}
+                          <Balance etherMode balance={item.args[1]} />
+                        </List.Item>
+                      );
+                    }}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </Route>
         <Route exact path="/debug">
