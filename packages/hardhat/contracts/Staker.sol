@@ -1,4 +1,5 @@
 pragma solidity 0.8.4;
+//SPDX-License-Identifier: MIT
 
 import "hardhat/console.sol";
 import "./ExampleExternalContract.sol";
