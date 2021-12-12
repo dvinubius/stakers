@@ -1,4 +1,4 @@
-import { List, Button, Col, Menu, Row, Card, Progress } from "antd";
+import { List, Button, Col, Menu, Row, Card, Progress, Spin } from "antd";
 import {
   PieChartOutlined,
   PlayCircleOutlined,
@@ -69,7 +69,7 @@ const { ethers } = require("ethers");
 */
 
 /// 📡 What chain are your contracts deployed to?
-const defaultTargetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const defaultTargetNetwork = NETWORKS.rinkeby; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -283,6 +283,12 @@ function App(props) {
     update();
   }, [withdrawAddress, readContracts.Staker, balanceStaked]);
 
+   // DISPLAY ONLY WHEN ALL LOADED for consistency
+
+   const readyAll = [particularBalanceAmount, isOver, belowThreshold]
+   .map(el => typeof el !== "undefined")
+   .reduce((acc, el) => acc && el);
+
   // HACKY HACKY
 
   const [, updateState] = React.useState();
@@ -378,9 +384,22 @@ function App(props) {
       <Switch>
         <Route exact path="/">
           <div style={{ padding: "2rem 1rem" }}>
-            {/* pass in any web3 props to this Home component. For example, yourLocalBalance */}
 
-            <StakerBanner
+          {!readyAll && (
+              <div
+                style={{
+                  height: "70vh",
+                  margin: "auto",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Spin size="large" />
+              </div>
+            )}
+
+            {readyAll && <> <StakerBanner
               complete={complete}
               failed={isOver && belowThreshold && !complete}
               balance={stakerContractBalance}
@@ -543,12 +562,6 @@ function App(props) {
               </div>
             </Card>
 
-            {/*
-                🎛 this scaffolding is full of commonly used components
-                this <Contract/> component will automatically parse your ABI
-                and give you a form to interact with it locally
-            */}
-
             <div style={{ width: 500, margin: "auto", marginTop: 64 }}>
               <div style={{ color: softTextCol, fontSize: "1rem" }}>Stake Events</div>
               <List
@@ -563,6 +576,7 @@ function App(props) {
                 }}
               />
             </div>
+            </>}
           </div>
         </Route>
         <Route exact path="/debug">
