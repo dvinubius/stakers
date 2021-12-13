@@ -1,4 +1,4 @@
-import { List, Button, Col, Menu, Row, Card, Progress, Spin } from "antd";
+import { List, Button, Col, Menu, Row, Card, Progress, Spin, Divider } from "antd";
 import {
   PieChartOutlined,
   PlayCircleOutlined,
@@ -400,7 +400,6 @@ function App(props) {
 
             {readyAll && (
               <>
-                {" "}
                 <StakerBanner
                   complete={complete}
                   failed={isOver && belowThreshold && !complete}
@@ -413,29 +412,32 @@ function App(props) {
                 <Card
                   style={{
                     width: "35rem",
-                    margin: "2rem auto",
+                    margin: "0 auto",
                     background: "linear-gradient(-45deg, #40A9FF0c, transparent)",
                   }}
                 >
-                  <div style={{ display: "flex", gap: "2rem", flexDirection: "column" }}>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
                     <div
                       style={{
-                        padding: 8,
                         display: "flex",
-                        flexDirection: "column",
                         alignItems: "center",
-                        gap: "1rem",
                         justifyContent: "space-between",
                         alignSelf: "center",
+                        width: "100%",
                       }}
                     >
-                      <div style={{ fontSize: "1.5rem" }}>Staker Contract</div>
+                      <div style={{ fontSize: "1.25rem" }}>Staker Contract</div>
+
                       <Address
-                        fontSize={"1.5rem"}
+                        noBlockie={true}
+                        fontSize={"1.25rem"}
                         value={readContracts && readContracts.Staker && readContracts.Staker.address}
                       />
                     </div>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <Divider />
+                    <div
+                      style={{ display: "flex", alignItems: "stretch", justifyContent: "space-between", gap: "1rem" }}
+                    >
                       <div
                         style={{
                           flex: "1 1 auto",

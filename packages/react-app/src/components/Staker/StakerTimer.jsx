@@ -58,8 +58,8 @@ const StakerTimer = ({ timeLeft }) => {
             .map((part, index) => (
               <p
                 style={{
-                  fontSize: `${1.75 - index * 0.125}rem`,
-                  lineHeight: "3rem",
+                  fontSize: `${1.5 - index * 0.125}rem`,
+                  lineHeight: "2.5rem",
                   color: softTextCol,
                   margin: 0,
                   padding: 0,
