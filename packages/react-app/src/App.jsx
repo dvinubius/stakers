@@ -415,7 +415,8 @@ function App(props) {
                     margin: "0 auto",
                     background: "linear-gradient(-45deg, #40A9FF0c, transparent)",
                   }}
-                  title={
+                >
+                  <div style={{ display: "flex", flexDirection: "column" }}>
                     <div
                       style={{
                         display: "flex",
@@ -433,9 +434,7 @@ function App(props) {
                         value={readContracts && readContracts.Staker && readContracts.Staker.address}
                       />
                     </div>
-                  }
-                >
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <Divider />
                     <div
                       style={{ display: "flex", alignItems: "stretch", justifyContent: "space-between", gap: "1rem" }}
                     >
@@ -462,10 +461,9 @@ function App(props) {
                     </div>
                   </div>
                 </Card>
-
                 {showExecute && (
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    <div style={{ margin: "2rem" }}>
+                  <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
+                    <div style={{ padding: 8 }}>
                       <Button
                         size="large"
                         loading={pendingUnlock}
@@ -489,15 +487,13 @@ function App(props) {
                     </div>
                   </div>
                 )}
-                {!showExecute && <div style={{ margin: "2rem" }}></div>}
-
                 {
                   // USER
                 }
                 <Card
                   style={{
                     width: "35rem",
-                    margin: "0 auto",
+                    margin: "2rem auto",
                     background: "linear-gradient(-45deg, #40A9FF0c, transparent)",
                   }}
                 >
@@ -565,7 +561,7 @@ function App(props) {
                       </div>
                     )}
 
-                    <Card size="small" style={{ padding: 8, width: "15rem", color: primaryCol, flexShrink: 0 }}>
+                    <Card style={{ padding: 8, width: "15rem", color: primaryCol, flexShrink: 0 }}>
                       <div style={{ fontSize: "1.25rem", color: particularBalanceColor }}>{particularBalanceTitle}</div>
                       {withdrawableBalanceError && <span style={{ fontSize: "1.5rem" }}>...</span>}
                       {!withdrawableBalanceError && (
@@ -574,7 +570,6 @@ function App(props) {
                     </Card>
                   </div>
                 </Card>
-
                 <div style={{ width: 500, margin: "auto", marginTop: 64 }}>
                   <div style={{ color: softTextCol, fontSize: "1rem" }}>Stake Events</div>
                   <List
