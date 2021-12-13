@@ -11,7 +11,9 @@ const StakerBanner = ({ complete, balance, failed, externalContractBalance }) =>
   return (
     <div
       style={{
-        padding: "1rem",
+        padding: "0.5rem",
+        width: "35rem",
+        margin: "0 auto 1rem",
         background: bg,
         border: border,
         color: col,
