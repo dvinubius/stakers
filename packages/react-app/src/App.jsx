@@ -474,7 +474,7 @@ function App(props) {
                         onClick={() => {
                           setPendingUnlock(true);
                           tx(writeContracts.Staker.execute(), update => {
-                            if (update && update.error) {
+                            if (update && (update.error || update.reason)) {
                               setPendingUnlock(false);
                             }
                             if (update && (update.status === "confirmed" || update.status === 1)) {
@@ -539,7 +539,7 @@ function App(props) {
                               onClick={() => {
                                 setPendingWithdrawal(true);
                                 tx(writeContracts.Staker.withdraw(withdrawAddress), update => {
-                                  if (update && update.error) {
+                                  if (update && (update.error || update.reason)) {
                                     setPendingWithdrawal(false);
                                   }
                                   if (update && (update.status === "confirmed" || update.status === 1)) {

@@ -32,7 +32,7 @@ const AddStake = ({ tx, price, writeContracts, forceUpdate, userBalanceZero }) =
           });
 
           tx(transaction, update => {
-            if (update && update.error) {
+            if (update && (update.error || update.reason)) {
               setPendingAddStake(false);
             }
             if (update && (update.status === "confirmed" || update.status === 1)) {
